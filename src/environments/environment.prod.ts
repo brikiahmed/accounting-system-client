@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  test: false,
+  baseUrl: 'https://brighteeth.tn:446'
 };

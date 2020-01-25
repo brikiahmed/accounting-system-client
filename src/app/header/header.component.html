@@ -1,0 +1,22 @@
+<ul *ngIf="user||true" nz-menu nzMode="inline"
+    style="width: 240px;height: 100vh;display: inline-block;position: fixed;overflow-x: hidden;overflow-y: auto">
+  <li
+    (nzOpenChange)="openHandler('sub1')"
+    [(nzOpen)]="openMap.sub1"
+    nz-submenu
+    nzIcon="question-circle"
+    nzTitle="Menu"
+  >
+    <ul>
+      <li nz-menu-item routerLink="/">Sub Menu 1</li>
+      <li nz-menu-item routerLink="/">Sub Menu 2</li>
+    </ul>
+  </li>
+  <li *ngIf="false"
+    (click)="logout()"
+    nz-menu-item
+  >
+    <i nz-icon nzType="poweroff"></i>
+    Se déconnecter
+  </li>
+</ul>
