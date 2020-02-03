@@ -12,6 +12,18 @@
       <li nz-menu-item routerLink="/">Sub Menu 2</li>
     </ul>
   </li>
+  <li
+    (nzOpenChange)="openHandler('sub2')"
+    [(nzOpen)]="openMap.sub2"
+    nz-submenu
+    nzIcon="question-circle"
+    nzTitle="Provision"
+  >
+    <ul>
+      <li nz-menu-item routerLink="/bill">Liste</li>
+      <li nz-menu-item routerLink="/">Sub Menu 2</li>
+    </ul>
+  </li>
   <li *ngIf="false"
     (click)="logout()"
     nz-menu-item

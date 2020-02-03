@@ -8,6 +8,7 @@ import {PublicFolderPipe} from '../_pipes/public-folder.pipe';
 import {en_US, NgZorroAntdModule, NZ_I18N, NZ_ICONS, NzIconModule} from 'ng-zorro-antd';
 import {IconDefinition} from '@ant-design/icons-angular';
 import * as AllIcons from '@ant-design/icons-angular/icons';
+import {RevertDatePipe} from '../_pipes/revert-date.pipe';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -17,7 +18,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
 
 @NgModule({
   declarations: [
-    PublicFolderPipe
+    PublicFolderPipe,
+    RevertDatePipe
   ],
   imports: [],
   exports: [

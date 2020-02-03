@@ -1,0 +1,42 @@
+<h4>Provisions</h4>
+
+
+<form (ngSubmit)="searchBill()" class="col-4 p-0" [formGroup]="searchForm">
+  <nz-input-group [nzSuffix]="suffixIconSearch" nzSearch>
+    <input type="text" nz-input placeholder="Recherche par n°facture" (input)="searchBill()"
+           formControlName="key"/>
+  </nz-input-group>
+  <ng-template #suffixIconSearch>
+    <i nz-icon nzType="search"></i>
+  </ng-template>
+</form>
+
+<h4 *ngIf="searchKey">Résultat de la recherche "{{searchKey}}" : {{nbElements}}
+  élément{{nbElements > 1 ? 's' : ''}}</h4>
+<nz-list [nzDataSource]="bills" [nzItemLayout]="'horizontal'" [nzLoading]="loading" [nzPagination]="pagination"
+         [nzNoResult]="'Aucun résultat'" [nzRenderItem]="item">
+  <ng-template #item let-item>
+    <nz-list-item>
+      <nz-comment>
+
+        <nz-comment-content>
+          <a routerLink="/bill/{{item.id}}">
+            {{item.provider.name}}
+          </a>
+          <span>
+            {{item.date|date:'dd-MM-y'}}
+          </span>
+        </nz-comment-content>
+      </nz-comment>
+    </nz-list-item>
+  </ng-template>
+  <ng-template #pagination>
+    <nz-pagination (nzPageIndexChange)="loadData($event)" *ngIf="nbElements>0" [nzPageIndex]="1"
+                   [nzShowTotal]="rangeTemplate"
+                   [nzTotal]="nbElements"></nz-pagination>
+    <ng-template #rangeTemplate let-range="range" let-total>
+      {{ range[0] }}-{{ range[1] }} de {{ total }} commande{{total > 1 ? 's' : ''}}
+    </ng-template>
+  </ng-template>
+</nz-list>
+

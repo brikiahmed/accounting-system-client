@@ -20,9 +20,7 @@ export class Globals {
   static login = '/login';
   static shop = '/shop';
   static home_image = '/home-image';
-
-
-  static orderStates = ['En attente de traitement', 'en attente de livraison', 'livrée', 'annulée'];
+  static bill = '/bill';
 
 
   static convertDateTimezone(serverDate: Date) {
