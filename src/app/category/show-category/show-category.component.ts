@@ -6,15 +6,15 @@ import {FormBuilder} from '@angular/forms';
 import {Globals} from '../../_globals/Globals';
 
 @Component({
-  selector: 'app-list-category',
-  templateUrl: './list-category.component.html',
-  styleUrls: ['./list-category.component.scss']
+  selector: 'app-show-category',
+  templateUrl: './show-category.component.html',
+  styleUrls: ['./show-category.component.scss']
 })
-export class ListCategoryComponent implements OnInit {
+export class ShowCategoryComponent implements OnInit {
 
   categoryUrl: string;
   loading: boolean;
-  categories: CategoryModel[];
+  category: CategoryModel;
 
   constructor(private crud: CrudService,
               private route: ActivatedRoute,
@@ -23,17 +23,19 @@ export class ListCategoryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAllCategories();
+    this.getCategory();
   }
 
-  getAllCategories() {
+  getCategory() {
     this.loading = true;
-    this.crud.getAll<CategoryModel[]>(this.categoryUrl)
-      .subscribe(categories => {
-        console.log(categories);
-        this.categories = categories;
-        this.loading = false;
-      });
+    this.route.params.subscribe(params => {
+      this.crud.getOne<CategoryModel>(this.categoryUrl, params.id)
+        .subscribe(category => {
+          console.log(category);
+          this.category = category;
+          this.loading = false;
+        });
+    });
   }
 
 }

@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import {CrudService} from '../../_services/crud.service';
+import {ActivatedRoute} from '@angular/router';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {ProductModel} from '../../_models/product.model';
+import {Globals} from '../../_globals/Globals';
 
 @Component({
   selector: 'app-list-product',
@@ -7,9 +12,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListProductComponent implements OnInit {
 
-  constructor() { }
+  productUrl: string;
+  loading: boolean;
+  products: ProductModel[];
 
-  ngOnInit() {
+  constructor(private crud: CrudService,
+              private route: ActivatedRoute,
+              private fb: FormBuilder) {
+    this.productUrl = Globals.apiUrl + Globals.product;
   }
 
+  ngOnInit() {
+    this.getAllProducts();
+  }
+
+  getAllProducts() {
+    this.loading = true;
+    this.crud.getAll<ProductModel[]>(this.productUrl)
+      .subscribe(products => {
+        console.log(products);
+        this.products = products;
+        this.loading = false;
+      });
+  }
 }
