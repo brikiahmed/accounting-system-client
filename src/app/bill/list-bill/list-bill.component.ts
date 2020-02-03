@@ -35,6 +35,7 @@ export class ListBillComponent implements OnInit {
               private fb: FormBuilder) {
     this.billUrl = Globals.apiUrl + Globals.bill;
     this.nbElements = 0;
+    console.log(this.billUrl);
   }
 
   ngOnInit() {
@@ -42,9 +43,9 @@ export class ListBillComponent implements OnInit {
     this.getAllBills();
   }
 
-  getAllBills(offset: number = 0) {
+  getAllBills(offset: number = 0, limit = 15) {
     let url;
-    this.nbSearchFields > 0 ? url = this.logUrl + SEARCH : url = this.logUrl;
+    this.nbSearchFields > 0 ? url = this.billUrl + Globals.search : url = this.billUrl;
 
     url += ('?offset=' + offset + '&limit=' + limit);
 
@@ -52,14 +53,14 @@ export class ListBillComponent implements OnInit {
       url += ('&order_by=' + this.sortBy.key + '&order_by_type=' + this.sortBy.value);
     }
 
-    console.log(Object.keys(this.searchFields));
-    for (const field of Object.keys(this.searchFields)) {
-      console.log(field);
-      console.log(this.searchFields[field]);
-      if (this.searchFields[field] !== '') {
-        url += ('&' + field + '=' + this.searchFields[field]);
-      }
-    }
+    // console.log(Object.keys(this.searchFields));
+    // for (const field of Object.keys(this.searchFields)) {
+    //   console.log(field);
+    //   console.log(this.searchFields[field]);
+    //   if (this.searchFields[field] !== '') {
+    //     url += ('&' + field + '=' + this.searchFields[field]);
+    //   }
+    // }
 
     this.loading = true;
     this.crud.getAllPaginate<{ count: number, elements: BillModel[] }>(this.billUrl, offset, 10)
@@ -72,6 +73,7 @@ export class ListBillComponent implements OnInit {
 
   get nbSearchFields() {
     let nb = 0;
+    return nb;
     for (const field of Object.keys(this.searchFields)) {
       console.log(field);
       console.log(this.searchFields[field]);

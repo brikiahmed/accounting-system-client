@@ -21,6 +21,7 @@ export class Globals {
   static shop = '/shop';
   static home_image = '/home-image';
   static bill = '/bill';
+  static search = '/search';
 
 
   static convertDateTimezone(serverDate: Date) {
