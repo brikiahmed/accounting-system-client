@@ -1,0 +1,21 @@
+<nz-spin [nzSpinning]="loading">
+  <h3>{{bill.provider.name}}</h3>
+  <h6>{{bill.date|date:'dd-MM-y'}}</h6>
+  <nz-table #basicTable [nzData]="listOfData">
+    <thead>
+    <tr>
+      <th>Produit</th>
+      <th>Qté</th>
+      <th>Prix unitaire</th>
+      <th>Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{ data.name }}</td>
+      <td>{{ data.age }}</td>
+      <td>{{ data.address }}</td>
+    </tr>
+    </tbody>
+  </nz-table>
+</nz-spin>
