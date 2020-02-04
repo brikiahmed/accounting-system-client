@@ -2,14 +2,16 @@
   <thead>
   <tr>
     <th>Name</th>
+    <th>Category</th>
     <th>Action</th>
   </tr>
   </thead>
   <tbody>
   <tr *ngFor="let data of basicTable.data">
     <td>{{data.name}}</td>
+    <td>{{data.category.name}}</td>
     <td>
-      <a routerLink="data.id">Show</a>
+      <a routerLink="show/{{data.id}}">Show</a>
       <nz-divider nzType="vertical"></nz-divider>
       <a>Edit</a>
       <nz-divider nzType="vertical"></nz-divider>

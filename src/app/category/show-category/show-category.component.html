@@ -1,1 +1,16 @@
-<p>show-category works!</p>
+<div *ngIf="!loading">
+  <h3>Category : {{category.name}}</h3>
+  <h5 class="mt-5">Products : </h5>
+  <nz-table #basicTable [nzData]="category.products">
+    <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{data.name}}</td>
+    </tr>
+    </tbody>
+  </nz-table>
+</div>

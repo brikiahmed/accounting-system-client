@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {ListCategoryComponent} from './list-category/list-category.component';
 import {ShowCategoryComponent} from './show-category/show-category.component';
+import {FormCategoryComponent} from './form-category/form-category.component';
 
 
 const routes: Routes = [
@@ -10,8 +11,12 @@ const routes: Routes = [
     component: ListCategoryComponent
   },
   {
-    path: ':id',
+    path: 'show/:id',
     component: ShowCategoryComponent
+  },
+  {
+    path: 'new',
+    component: FormCategoryComponent
   }
 ];
 
