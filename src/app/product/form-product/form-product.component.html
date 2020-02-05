@@ -1,0 +1,22 @@
+<form [formGroup]="productForm" (ngSubmit)="submit()">
+  <div class="row justify-content-center">
+    <div class="form-group col-lg-12 col-md-10">
+      <label>Name</label>
+      <input type="text" class="form-control" id="name" placeholder="Name" formControlName="name">
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="form-group col-lg-12 col-md-10">
+      <label>Category</label>
+      <select class="custom-select" name="category" (change)="changeCategory($event)" formControlName="category_id">
+        <option value="" disabled>Choose category</option>
+        <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row justify-content-end">
+    <input type="submit" class="btn btn-success" value="Submit">
+  </div>
+</form>
