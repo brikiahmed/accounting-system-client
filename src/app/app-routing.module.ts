@@ -15,6 +15,10 @@ const routes: Routes = [
     path: 'category',
     loadChildren: () => import('./category/category.module').then(m => m.CategoryModule),
   },
+  {
+    path: 'payment',
+    loadChildren: () => import('./payment/payment.module').then(m => m.PaymentModule),
+  },
 ];
 
 @NgModule({

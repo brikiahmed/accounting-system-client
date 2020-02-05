@@ -25,6 +25,19 @@
     </ul>
   </li>
   <li
+    (nzOpenChange)="openHandler('sub3')"
+    [(nzOpen)]="openMap.sub3"
+    nz-submenu
+    nzIcon="question-circle"
+    nzTitle="Paiements"
+  >
+    <ul>
+      <li nz-menu-item routerLink="/payment/cash">Espèces</li>
+      <li nz-menu-item routerLink="/payment/check">Chèques</li>
+      <li nz-menu-item routerLink="/payment/add">Ajouter un paiement</li>
+    </ul>
+  </li>
+  <li
     (nzOpenChange)="openHandler('sub4')"
     [(nzOpen)]="openMap.sub4"
     nz-submenu
@@ -49,8 +62,8 @@
     </ul>
   </li>
   <li *ngIf="false"
-    (click)="logout()"
-    nz-menu-item
+      (click)="logout()"
+      nz-menu-item
   >
     <i nz-icon nzType="poweroff"></i>
     Se déconnecter

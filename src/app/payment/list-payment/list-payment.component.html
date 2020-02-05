@@ -1,0 +1,18 @@
+<nz-table #basicTable [nzLoading]="loading" [nzData]="payments" [nzShowPagination]="false">
+  <thead>
+  <tr>
+    <th>Fournisseur</th>
+    <th>Date</th>
+    <th *ngIf="type==='check'">Num cheèque</th>
+    <th *ngIf="type==='check'">Date Emission</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let payment of payments">
+    <td>{{ payment.bill.provider.name }}</td>
+    <td>{{ payment.bill.date|date:'dd-MM-y' }}</td>
+    <td *ngIf="type==='check'">{{ payment.check_number }}</td>
+    <td *ngIf="type==='check'">{{ payment.date|date:'dd-MM-y' }}</td>
+  </tr>
+  </tbody>
+</nz-table>
