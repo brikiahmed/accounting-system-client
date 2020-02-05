@@ -22,6 +22,11 @@ export class Globals {
   static home_image = '/home-image';
   static bill = '/bill';
   static search = '/search';
+  static payment = '/payment';
+  static cash = '/cash';
+  static check = '/check';
+  static provider = '/provider';
+  static no_payment = '/no-payment';
 
 
   static convertDateTimezone(serverDate: Date) {

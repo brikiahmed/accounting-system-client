@@ -30,11 +30,11 @@ export class CrudService {
     return this.http.get<T>(url + '/' + id);
   }
 
-  post(url, values, toFormData = false) {
+  post<T>(url, values, toFormData = false) {
     if (toFormData) {
-      return this.http.post(url, Globals.toFormData(values));
+      return this.http.post<T>(url, Globals.toFormData(values));
     }
-    return this.http.post(url, values);
+    return this.http.post<T>(url, values);
   }
 
   put(url, id, values, toFormData = false) {
