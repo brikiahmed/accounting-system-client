@@ -7,11 +7,12 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {GlobalModule} from './_globals/global.module';
 import { HeaderComponent } from './header/header.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent
-  ],
+    HeaderComponent,
+],
   imports: [
     AppRoutingModule,
     GlobalModule,

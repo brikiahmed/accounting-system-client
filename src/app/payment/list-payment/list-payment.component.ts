@@ -15,27 +15,26 @@ export class ListPaymentComponent implements OnInit {
   paymentUrl;
   payments: PaymentModel[];
   checkUrl;
+  cashUrl;
   loading: boolean;
   type: string;
 
-  // checkPayments: PaymentModel[];
-  cashUrl;
-
-  // cashPayments: PaymentModel[];
+   checkPayments: PaymentModel[];
+   //cashPayments: PaymentModel[];
 
   constructor(private crud: CrudService,
               private router: Router) {
     this.paymentUrl = Globals.apiUrl + Globals.payment;
     this.checkUrl = this.paymentUrl + Globals.check;
-    this.cashUrl = this.paymentUrl + Globals.cash;
+    //this.cashUrl = this.paymentUrl + Globals.cash;
     router.events
       .subscribe(e => {
         if (e instanceof NavigationEnd) {
           console.log(e);
-          if (e.url.includes('cash')) {
-            this.getAllPayments(this.cashUrl);
-            this.type = 'cash';
-          }
+          //if (e.url.includes('cash')) {
+            //this.getAllPayments(this.cashUrl);
+            //this.type = 'cash';
+          //}
           if (e.url.includes('check')) {
             this.getAllPayments(this.checkUrl);
             this.type = 'check';
@@ -45,39 +44,42 @@ export class ListPaymentComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.getAllPayments();
-    // console.log(this.router.url);
-    // this.router.events
-    //   .subscribe(e => {
-    //     if (e instanceof NavigationEnd) {
-    //       console.log(e);
-    //     }
-    //   });
+     // this.getAllPayments();
+     console.log(this.router.url);
+     this.router.events
+       .subscribe(e => {
+        if (e instanceof NavigationEnd) {
+           console.log(e);
+         }
+      });
   }
 
   getAllPayments(url) {
-    // this.getChecks();
-    // this.getCash();
-    this.loading = true;
-    this.crud.getAll<PaymentModel[]>(url)
+     // this.getChecks();
+     // this.getCash();
+     this.loading = true;
+     this.crud.getAll<PaymentModel[]>(url)
       .subscribe(payments => {
         this.payments = payments;
         this.loading = false;
       });
   }
 
-  // getChecks() {
-  //   this.crud.getAll<PaymentModel[]>(this.checkUrl)
-  //     .subscribe(checkPayments => {
-  //       this.checkPayments = checkPayments;
-  //     });
-  // }
-  //
-  // getCash() {
-  //   this.crud.getAll<PaymentModel[]>(this.cashUrl)
-  //     .subscribe(cashPayments => {
-  //       this.cashPayments = cashPayments;
-  //     });
-  // }
+   getChecks(check_number) {
+
+
+      this.crud.getAll<PaymentModel[]>(this.checkUrl)
+        .subscribe(checkPayments => {
+          this.checkPayments = checkPayments;
+        });
+    }
+
+
+   //getCash() {
+     //this.crud.getAll<PaymentModel[]>(this.cashUrl)
+       //.subscribe(cashPayments => {
+         //this.cashPayments = cashPayments;
+       //});
+   //}
 
 }
