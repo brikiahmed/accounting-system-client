@@ -17,6 +17,10 @@ const routes: Routes = [
   {
     path: 'add',
     component: FormPaymentComponent
+  },
+  {
+    path: 'edit/:id',
+    component: FormPaymentComponent
   }
 ];
 
