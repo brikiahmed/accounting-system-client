@@ -7,6 +7,7 @@ export class BillModel {
   date: string;
   deadline: string;
   tax_stamp: number;
+  provision: boolean;
   provider: ProviderModel;
   payment: PaymentModel;
   products: ProductModel[];

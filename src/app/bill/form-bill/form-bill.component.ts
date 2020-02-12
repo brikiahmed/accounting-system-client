@@ -122,7 +122,7 @@ export class FormBillComponent implements OnInit {
       tax_stamp: [this.bill ? this.bill.tax_stamp : 0.6, Validators.required],
       provider_id: [this.bill ? this.bill.provider.id : null, Validators.required],
       products: this.fb.array(this.bill ? [this.createProduct()] : []),
-      provision: this.accessFromRoute !== null && this.accessFromRoute !== undefined
+      provision: this.bill ? this.bill.provision : this.accessFromRoute !== null && this.accessFromRoute !== undefined
     });
 
     if (this.bill) {
