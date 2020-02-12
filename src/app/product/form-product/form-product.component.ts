@@ -3,6 +3,8 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CrudService} from '../../_services/crud.service';
 import {Globals} from '../../_globals/Globals';
 import {CategoryModel} from '../../_models/category.model';
+import {ProductModel} from '../../_models/product.model';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-form-product',
@@ -11,20 +13,33 @@ import {CategoryModel} from '../../_models/category.model';
 })
 export class FormProductComponent implements OnInit {
 
+  product: ProductModel;
   productUrl: string;
   categoryUrl: string;
   productForm: FormGroup;
   categories: CategoryModel[] = [];
+  loaded = false;
 
   constructor(private crud: CrudService,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private route: ActivatedRoute) {
     this.productUrl = Globals.apiUrl + Globals.product;
     this.categoryUrl = Globals.apiUrl + Globals.category;
   }
 
   ngOnInit() {
-    this.loadCategories();
-    this.initProductForm();
+    this.loadProduct();
+  }
+
+  loadProduct() {
+    this.route.params.subscribe(params => {
+      this.crud.getOne(this.productUrl, params.id).subscribe((data: ProductModel) => {
+        console.log(data);
+        this.product = data;
+        this.loadCategories();
+        this.initProductForm();
+      });
+    });
   }
 
   loadCategories() {
@@ -36,9 +51,10 @@ export class FormProductComponent implements OnInit {
 
   initProductForm() {
     this.productForm = this.fb.group({
-      name: ['', Validators.required],
-      category_id: ['']
+      name: [this.product.name, Validators.required],
+      category_id: [this.product.category.id]
     });
+    this.loaded = true;
   }
 
   changeCategory(e) {
@@ -53,7 +69,7 @@ export class FormProductComponent implements OnInit {
       return;
     }
     // console.log(this.productForm.value);
-    this.crud.post(this.productUrl, this.productForm.value).subscribe(data => {
+    this.crud.put(this.productUrl, this.product.id, this.productForm.value).subscribe(data => {
       console.log(data);
     });
   }

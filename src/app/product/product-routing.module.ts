@@ -9,14 +9,12 @@ const routes: Routes = [
   {
     path: '',
     component: ListProductComponent
-  },
-  {
-    path: 'show/:id',
-    component: ShowProductComponent
-  },
-  {
-    path: 'new',
+  }, {
+    path: 'edit/:id',
     component: FormProductComponent
+  }, {
+    path: ':id',
+    component: ShowProductComponent
   }
 ];
 
