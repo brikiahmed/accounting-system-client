@@ -5,6 +5,7 @@ import {ProductModel} from './product.model';
 export class BillModel {
   id: string;
   date: string;
+  deadline: string;
   tax_stamp: number;
   provider: ProviderModel;
   payment: PaymentModel;

@@ -5,7 +5,8 @@ import {ProductModel} from '../../_models/product.model';
 import {CategoryModel} from '../../_models/category.model';
 import {Globals} from '../../_globals/Globals';
 import {ProviderModel} from '../../_models/provider.model';
-import {NavigationEnd, Router} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {BillModel} from '../../_models/bill.model';
 
 @Component({
   selector: 'app-form-bill',
@@ -19,6 +20,9 @@ export class FormBillComponent implements OnInit {
   categoryForm: FormGroup;
 
   loading: boolean;
+
+  billId: string;
+  bill: BillModel;
 
   productForm: FormGroup;
   products: ProductModel[];
@@ -39,11 +43,12 @@ export class FormBillComponent implements OnInit {
   newProvider: boolean;
   providerForm: FormGroup;
 
-  addSubmitButton: boolean;
+  accessFromRoute: boolean;
 
 
   constructor(private crud: CrudService,
               private router: Router,
+              private route: ActivatedRoute,
               private fb: FormBuilder) {
     this.productUrl = Globals.apiUrl + Globals.product;
     this.categoryUrl = Globals.apiUrl + Globals.category;
@@ -53,8 +58,12 @@ export class FormBillComponent implements OnInit {
     router.events
       .subscribe(e => {
         if (e instanceof NavigationEnd) {
-          this.addSubmitButton = e.url.includes('bill');
+          this.accessFromRoute = e.url.includes('bill');
         }
+      });
+    route.params
+      .subscribe(params => {
+        this.billId = params.id;
       });
   }
 
@@ -67,6 +76,9 @@ export class FormBillComponent implements OnInit {
     this.initBillForm();
     this.initProviderForm();
     this.emitForm();
+    if (this.billId) {
+      this.getOneBill();
+    }
   }
 
 
@@ -103,15 +115,32 @@ export class FormBillComponent implements OnInit {
 
   initBillForm() {
     this.billForm = this.fb.group({
-      date: [null, Validators.compose([
+      date: [this.bill ? this.bill.date : null, Validators.compose([
         Validators.required
       ])],
-      deadline: [null, this.addSubmitButton ? Validators.required : null],
-      tax_stamp: [0.6, Validators.required],
-      provider_id: [null, Validators.required],
-      products: this.fb.array([this.createProduct()]),
-      provision: this.addSubmitButton !== null && this.addSubmitButton !== undefined
+      deadline: [this.bill ? this.bill.deadline : null, this.accessFromRoute ? Validators.required : null],
+      tax_stamp: [this.bill ? this.bill.tax_stamp : 0.6, Validators.required],
+      provider_id: [this.bill ? this.bill.provider.id : null, Validators.required],
+      products: this.fb.array(this.bill ? [this.createProduct()] : []),
+      provision: this.accessFromRoute !== null && this.accessFromRoute !== undefined
     });
+
+    if (this.bill) {
+      (this.billForm.controls.products as FormArray).clear();
+      for (const product of this.bill.products) {
+        (this.billForm.controls.products as FormArray).push(this.createProduct(product));
+      }
+    }
+  }
+
+  getOneBill() {
+    this.loading = true;
+    this.crud.getOne<BillModel>(this.billUrl, this.billId)
+      .subscribe(bill => {
+        this.bill = bill;
+        this.initBillForm();
+        this.loading = false;
+      });
   }
 
   getAllProducts() {
@@ -239,16 +268,24 @@ export class FormBillComponent implements OnInit {
   }
 
   postBill() {
-    this.crud.post(this.billUrl, this.billForm.value)
-      .subscribe(() => {
-        this.addSubmitButton ? this.router.navigate(['/bill']) :
-          ((this.paymentType === 0 || this.paymentType === 1) ?
-            (this.paymentType === 0 ?
-              this.router.navigate(['/payment/cash']) :
-              this.router.navigate(['/payment/check'])) : '');
+    if (!this.billId) {
+      this.crud.post(this.billUrl, this.billForm.value)
+        .subscribe(() => {
+          // this.accessFromRoute ? this.router.navigate(['/bill']) :
+          //   ((this.paymentType === 0 || this.paymentType === 1) ?
+          //     (this.paymentType === 0 ?
+          //       this.router.navigate(['/payment/cash']) :
+          //       this.router.navigate(['/payment/check'])) : '');
 
-        this.loading = false;
-      });
+          this.router.navigate(['/bill']);
+          this.loading = false;
+        });
+    } else {
+      this.crud.put(this.billUrl, this.billId, this.billForm.value)
+        .subscribe(() => {
+          this.router.navigate(['/bill/' + this.billId]);
+        });
+    }
   }
 
   resetForm($event: MouseEvent) {

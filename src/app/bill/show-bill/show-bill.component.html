@@ -1,6 +1,6 @@
 <nz-spin [nzSpinning]="loading">
   <ng-container *ngIf="bill">
-    <h3>{{bill.provider.name}}</h3>
+    <h3 class="pointer" routerLink="/bill/edit/{{bill.id}}">{{bill.provider.name}}</h3>
     <h6>{{bill.date|date:'dd-MM-y'}}</h6>
     <div>
       <p>Timbre fiscal {{bill.tax_stamp}}</p>

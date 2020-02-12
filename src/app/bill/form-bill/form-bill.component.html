@@ -17,7 +17,7 @@
           </ng-template>
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item *ngIf="addSubmitButton">
+      <nz-form-item *ngIf="accessFromRoute">
         <nz-form-label [nzSpan]="7" nzRequired>Deadline</nz-form-label>
         <nz-form-control [nzSpan]="12" [nzErrorTip]="deadlineError">
           <nz-date-picker [nzFormat]="'dd-MM-yyyy'" formControlName="deadline"
@@ -122,7 +122,7 @@
         </nz-form-item>
 
       </div>
-      <nz-form-item *ngIf="addSubmitButton">
+      <nz-form-item *ngIf="accessFromRoute">
         <nz-form-control [nzOffset]="7" [nzSpan]="12">
           <button nz-button nzType="primary"
                   [disabled]="!(billForm.valid&&(!newProvider||providerForm.valid))"
