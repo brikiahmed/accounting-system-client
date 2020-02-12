@@ -6,13 +6,15 @@ import {GlobalModule} from '../_globals/global.module';
 import { ListPaymentComponent } from './list-payment/list-payment.component';
 import { FormPaymentComponent } from './form-payment/form-payment.component';
 import { ListPaymentCashComponent } from './list-payment-cash/list-payment-cash.component';
+import {BillModule} from '../bill/bill.module';
 
 
 @NgModule({
   declarations: [ListPaymentComponent, FormPaymentComponent, ListPaymentCashComponent],
   imports: [
     GlobalModule,
-    PaymentRoutingModule
+    PaymentRoutingModule,
+    BillModule
   ]
 })
 export class PaymentModule {

@@ -1,9 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CrudService} from '../../_services/crud.service';
 import {Globals} from '../../_globals/Globals';
 import {BillModel} from '../../_models/bill.model';
 import {ProviderModel} from '../../_models/provider.model';
+import {CategoryModel} from '../../_models/category.model';
+import {ProductModel} from '../../_models/product.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-form-payment',
@@ -11,7 +14,6 @@ import {ProviderModel} from '../../_models/provider.model';
   styleUrls: ['./form-payment.component.scss']
 })
 export class FormPaymentComponent implements OnInit {
-
   paymentForm: FormGroup;
   paymentUrl: string;
   paymentType: boolean;
@@ -22,25 +24,31 @@ export class FormPaymentComponent implements OnInit {
   bills: BillModel[];
   billWithoutPayment: string;
 
+
   selectedProvider: any;
   newProvider: boolean;
   providerForm: FormGroup;
-  providers: ProviderModel[];
   private providerUrl: string;
+  private readonly billUrl: string;
+
+  loading: boolean;
+
 
   constructor(private crud: CrudService,
+              private router: Router,
               private fb: FormBuilder) {
-    this.billWithoutPayment = Globals.apiUrl + Globals.bill + Globals.no_payment;
+    this.billUrl = Globals.apiUrl + Globals.bill;
+    this.billWithoutPayment = this.billUrl + Globals.no_payment;
     this.paymentUrl = Globals.apiUrl + Globals.payment;
     this.providerUrl = Globals.apiUrl + Globals.provider;
   }
 
+
   ngOnInit() {
     this.getAllBills();
-    this.getAllProviders();
     this.initPaymentForm();
-    this.initBillForm();
-    this.initProviderForm();
+    this.billForm = this.fb.group({});
+    this.providerForm = this.fb.group({});
   }
 
   submitForm(): void {
@@ -57,15 +65,22 @@ export class FormPaymentComponent implements OnInit {
       this.providerForm.controls[key].markAsDirty();
       this.providerForm.controls[key].updateValueAndValidity();
     }
+
+    this.loading = true;
+
     console.log(this.billForm.value, this.paymentForm.value, this.selectedBill);
+    // if user selected existing bill
     if (!this.newBill) {
       this.paymentForm.controls.bill_id.setValue(this.selectedBill);
       this.postPayment();
     } else {
+      // if user created new bill
       if (!this.newProvider) {
-        this.billForm.controls.provider_id.setValue(this.selectedProvider);
+        // if user selected exiting provider
+        // this.billForm.controls.provider_id.setValue(this.selectedProvider);
         this.postBill();
       } else {
+        // if user created new provider
         this.crud.post<ProviderModel>(this.providerUrl, this.providerForm.value)
           .subscribe(provider => {
             this.billForm.controls.provider_id.setValue(provider.id);
@@ -76,8 +91,8 @@ export class FormPaymentComponent implements OnInit {
   }
 
   postBill() {
-
-    this.crud.post<BillModel>(this.billWithoutPayment, this.billForm.value)
+    console.log('creating bill');
+    this.crud.post<BillModel>(this.billUrl, this.billForm.value)
       .subscribe(bill => {
         this.paymentForm.controls.bill_id.setValue(bill.id);
         this.postPayment();
@@ -88,7 +103,10 @@ export class FormPaymentComponent implements OnInit {
     this.crud.post(this.paymentUrl, this.paymentForm.value)
       .subscribe(data => {
         console.log(data);
+        this.router.navigate([this.paymentType ? '/payment/check' : '/payment/cash']);
+        this.loading = false;
       });
+
   }
 
   resetForm(e: MouseEvent): void {
@@ -108,23 +126,6 @@ export class FormPaymentComponent implements OnInit {
     });
   }
 
-  initProviderForm() {
-    this.providerForm = this.fb.group({
-      name: [null]
-    });
-  }
-
-  initBillForm() {
-    this.billForm = this.fb.group({
-      date: [null, Validators.compose([
-        Validators.required
-      ])],
-      // deadline: [null],
-      tax_stamp: 0.6,
-      provider_id: [null]
-    });
-  }
-
   getAllBills() {
     this.crud.getAll<BillModel[]>(this.billWithoutPayment)
       .subscribe(bills => {
@@ -132,12 +133,6 @@ export class FormPaymentComponent implements OnInit {
       });
   }
 
-  getAllProviders() {
-    this.crud.getAll<ProviderModel[]>(this.providerUrl)
-      .subscribe(providers => {
-        this.providers = providers;
-      });
-  }
 
   setValidators() {
     if (this.paymentType) {
@@ -147,18 +142,14 @@ export class FormPaymentComponent implements OnInit {
       this.initPaymentForm();
     }
     if (this.newBill) {
-      this.billForm.controls.tax_stamp.setValidators(Validators.required);
-      this.billForm.controls.date.setValidators(Validators.required);
+      // this.billForm.controls.tax_stamp.setValidators(Validators.required);
+      // this.billForm.controls.date.setValidators(Validators.required);
       this.selectedBill = null;
     } else {
-      this.initBillForm();
-    }
-    if (this.newProvider) {
-      this.providerForm.controls.name.setValidators(Validators.required);
-      console.log(this.providerForm);
-      this.selectedProvider = null;
-    } else {
-      this.initProviderForm();
+      // this.initBillForm();
+      this.billForm = this.fb.group({});
     }
   }
+
+
 }

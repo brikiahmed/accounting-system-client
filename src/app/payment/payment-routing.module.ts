@@ -2,14 +2,13 @@ import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {ListPaymentComponent} from './list-payment/list-payment.component';
 import {FormPaymentComponent} from './form-payment/form-payment.component';
-import {ListPaymentCashComponent} from './list-payment-cash/list-payment-cash.component';
 
 
 
 const routes: Routes = [
   {
     path: 'cash',
-    component: ListPaymentCashComponent
+    component: ListPaymentComponent
   },
   {
     path: 'check',

@@ -1,0 +1,196 @@
+<nz-spin [nzSpinning]="loading">
+  <div class="form-container">
+    <form [formGroup]="billForm" (input)="emitForm()">
+
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>date</nz-form-label>
+        <nz-form-control [nzSpan]="12" [nzErrorTip]="billDateError">
+          <nz-date-picker [nzFormat]="'dd-MM-yyyy'" formControlName="date"
+                          (ngModelChange)="emitForm()"></nz-date-picker>
+
+          <input nz-input formControlName="date" *ngIf="false" placeholder="date"/>
+          <ng-template #billDateError let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              Field required
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="addSubmitButton">
+        <nz-form-label [nzSpan]="7" nzRequired>Deadline</nz-form-label>
+        <nz-form-control [nzSpan]="12" [nzErrorTip]="deadlineError">
+          <nz-date-picker [nzFormat]="'dd-MM-yyyy'" formControlName="deadline"
+                          (ngModelChange)="emitForm()"></nz-date-picker>
+
+          <input nz-input formControlName="date" *ngIf="false" placeholder="deadline"/>
+          <ng-template #deadlineError let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              Field required
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>tax_stamp</nz-form-label>
+        <nz-form-control [nzSpan]="12" [nzErrorTip]="taxStampError">
+          <input nz-input formControlName="tax_stamp" placeholder="tax_stamp"/>
+          <ng-template #taxStampError let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              Please input your E-mail!
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+
+      <nz-form-item>
+        <nz-form-control [nzSpan]="12" [nzOffset]="7">
+          <button class="btn btn-primary" (click)="preventDefault($event);addProduct()">Add product</button>
+          <button class="btn btn-primary" (click)="preventDefault($event);openDrawer()">Create new product</button>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item formArrayName="products"
+                    *ngFor="let product of billForm.get('products').controls; let i = index;">
+        <div>
+          <div [formGroupName]="i">
+            <nz-form-control [nzSpan]="6">
+              <span *ngIf="i===0">Produit</span>
+              <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Choisir un produit" formControlName="product_id">
+                <nz-option nzLabel="{{product.name}}" nzValue="{{product.id}}"
+                           *ngFor="let product of products;"></nz-option>
+              </nz-select>
+            </nz-form-control>
+            <nz-form-control [nzSpan]="4">
+              <span *ngIf="i===0">Quantité</span>
+              <nz-input-number formControlName="quantity" [nzMin]="0" [nzStep]="1"></nz-input-number>
+            </nz-form-control>
+            <nz-form-control [nzSpan]="4">
+              <span *ngIf="i===0">Prix</span>
+              <nz-input-number formControlName="price" [nzMin]="0" [nzStep]="1"></nz-input-number>
+            </nz-form-control>
+            <nz-form-control [nzSpan]="2">
+              <span *ngIf="i===0">Supprimer</span>
+              <i nz-icon nzType="delete" nzTheme="outline" (click)="deleteProduct(i)" class="pointer"></i>
+            </nz-form-control>
+          </div>
+
+        </div>
+
+      </nz-form-item>
+
+
+      <div>Total : {{total}}</div>
+
+
+      <div>
+        <nz-form-item>
+          <nz-form-control [nzSpan]="12" [nzOffset]="7">
+            <h4>Fournisseur</h4>
+            <span>Existant</span>
+            <nz-switch [(ngModel)]="newProvider" (ngModelChange)="setValidators();emitForm()"
+                       [ngModelOptions]="{standalone:true}"></nz-switch>
+            <span>Nouveau</span>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <!--  <nz-form-control  *ngIf="!newBill" [nzOffset]="7">-->
+      <nz-form-item>
+        <nz-form-control [nzSpan]="12" [nzOffset]="7">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select a provider" *ngIf="!newProvider"
+                     formControlName="provider_id">
+            <nz-option nzLabel="{{provider.name}}" nzValue="{{provider.id}}"
+                       *ngFor="let provider of providers"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <div [formGroup]="providerForm" *ngIf="newProvider">
+
+        <nz-form-item>
+          <nz-form-label [nzSpan]="7" nzRequired>name</nz-form-label>
+          <nz-form-control [nzSpan]="12" [nzErrorTip]="nameError">
+            <input nz-input formControlName="name" placeholder="name"/>
+            <ng-template #nameError let-control>
+              <ng-container *ngIf="control.hasError('required')">
+                Please input your E-mail!
+              </ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+
+      </div>
+      <nz-form-item *ngIf="addSubmitButton">
+        <nz-form-control [nzOffset]="7" [nzSpan]="12">
+          <button nz-button nzType="primary"
+                  [disabled]="!(billForm.valid&&(!newProvider||providerForm.valid))"
+                  (click)="submitForm($event)"
+          >
+            <!--              [disabled]="!paymentForm.valid&&(!newBill||!billForm.valid)&&(newBill||!selectedBill)"-->
+            Submit
+          </button>
+          <button nz-button (click)="resetForm($event)">Reset</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+
+
+    <nz-drawer
+      [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom': '53px' }"
+      [nzWidth]="720"
+      [nzVisible]="drawerVisible"
+      nzTitle="Create"
+      (nzOnClose)="closeDrawer()"
+      [nzOffsetX]="childrenDrawerVisible ? 180 : 0"
+    >
+      <form nz-form [formGroup]="productForm">
+        <div nz-row nzGutter="8">
+          <div nz-col nzSpan="12">
+            <nz-form-item>
+              <nz-form-label>Product name</nz-form-label>
+              <nz-form-control>
+                <input nz-input placeholder="please enter user name" formControlName="name"/>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+        <div nz-row nzGutter="8">
+          <div nz-col nzSpan="12">
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Choisir une catégorie" formControlName="category_id">
+              <nz-option nzLabel="{{category.name}}" nzValue="{{category.id}}"
+                         *ngFor="let category of categories;"></nz-option>
+            </nz-select>
+          </div>
+        </div>
+
+
+        <span (click)="openChildrenDrawer()" class="pointer">Create new category</span>
+      </form>
+      <div class="footer">
+        <button type="button" (click)="closeDrawer()" class="ant-btn" style="margin-right: 8px;"><span>Cancel</span>
+        </button>
+        <button type="button" (click)="closeDrawer();postProduct()" class="ant-btn ant-btn-primary"><span>Submit</span>
+        </button>
+      </div>
+
+      <nz-drawer (nzOnClose)="closeChildrenDrawer()" [nzClosable]="false" [nzVisible]="childrenDrawerVisible"
+                 nzTitle="Food">
+        <form [formGroup]="categoryForm" (ngSubmit)="postCategory()">
+          <div nz-row nzGutter="8">
+            <div nz-col nzSpan="24">
+              <nz-form-item>
+                <nz-form-label>Product name</nz-form-label>
+                <nz-form-control>
+                  <input nz-input placeholder="please enter user name" formControlName="name"/>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <input type="submit" value="Submit" class="btn btn-secondary">
+          </div>
+        </form>
+      </nz-drawer>
+    </nz-drawer>
+  </div>
+</nz-spin>

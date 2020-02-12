@@ -8,7 +8,7 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let payment of payments">
+  <tr *ngFor="let payment of payments" routerLink="/bill/{{payment.bill.id}}">
     <td>{{ payment.bill.provider.name }}</td>
     <td>{{ payment.bill.date|date:'dd-MM-y' }}</td>
     <td *ngIf="type==='check'">{{ payment.check_number }}</td>

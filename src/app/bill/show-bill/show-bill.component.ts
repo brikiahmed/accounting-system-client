@@ -59,4 +59,17 @@ export class ShowBillComponent implements OnInit {
       });
   }
 
+  get total() {
+    if (this.bill) {
+      let total = 0;
+      total += this.bill.tax_stamp;
+      for (const product of this.bill.products) {
+        total += product.purchase.quantity * product.purchase.price;
+      }
+      return total;
+    } else {
+      return 0;
+    }
+  }
+
 }

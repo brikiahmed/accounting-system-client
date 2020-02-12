@@ -6,7 +6,7 @@
     <th *ngIf="type==='cash'">Date</th>
   </tr>
   </thead>
-  <tbody>
+  <tbody *ngIf="payments">
   <tr *ngFor="let payment of payments">
     <td *ngIf="type==='cash'">{{ payment.bill.provider.name }}</td>
     <td *ngIf="type==='cash'">{{ payment.bill.date|date:'dd-MM-y' }}</td>
