@@ -1,4 +1,5 @@
 <nz-spin [nzSpinning]="loading">
+  <h3>{{billId ? 'Modifier' : 'Ajouter' + ' paiement'}}</h3>
   <div class="form-container">
     <form [formGroup]="billForm" (input)="emitForm()">
 
