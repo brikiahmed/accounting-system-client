@@ -11,9 +11,9 @@
     <td>{{data.name}}</td>
     <td>{{data.category.name}}</td>
     <td>
-      <a routerLink="show/{{data.id}}">Show</a>
+      <a [routerLink]="['/product/', data.id]">Show</a>
       <nz-divider nzType="vertical"></nz-divider>
-      <a>Edit</a>
+      <a routerLink="edit/{{data.id}}">Edit</a>
       <nz-divider nzType="vertical"></nz-divider>
       <a>Delete</a>
     </td>
