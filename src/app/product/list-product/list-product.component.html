@@ -1,3 +1,4 @@
+<h3>Produits</h3>
 <nz-table #basicTable [nzData]="products">
   <thead>
   <tr>
@@ -15,7 +16,7 @@
       <nz-divider nzType="vertical"></nz-divider>
       <a routerLink="edit/{{data.id}}">Edit</a>
       <nz-divider nzType="vertical"></nz-divider>
-      <a>Delete</a>
+      <a (click)="delete(data.id)">Delete</a>
     </td>
   </tr>
   </tbody>

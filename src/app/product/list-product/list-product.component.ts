@@ -35,4 +35,10 @@ export class ListProductComponent implements OnInit {
         this.loading = false;
       });
   }
+
+  delete(id: string) {
+    this.crud.delete(this.productUrl, id).subscribe(data => {
+      this.products = this.products.filter(product => product.id !== id);
+    });
+  }
 }
