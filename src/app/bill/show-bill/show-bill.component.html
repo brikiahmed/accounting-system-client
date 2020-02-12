@@ -1,10 +1,16 @@
 <nz-spin [nzSpinning]="loading">
+  <h3>Facture</h3>
   <ng-container *ngIf="bill">
     <h3 class="pointer" routerLink="/bill/edit/{{bill.id}}">{{bill.provider.name}}</h3>
     <h6>{{bill.date|date:'dd-MM-y'}}</h6>
     <div>
       <p>Timbre fiscal {{bill.tax_stamp}}</p>
       <p>Total {{total}}</p>
+      <p>Mode de paiement :
+        <span routerLink="/payment/edit/{{bill.payment.id}}">{{bill.payment.check_number ? 'chèque' : 'espéce'}}</span>
+      </p>
+      <p *ngIf="bill.payment.check_number">Numéro : {{bill.payment.check_number}}, date
+        : {{bill.payment.date|date:'dd-MM-yyyy'}}</p>
     </div>
     <nz-table #basicTable [nzData]="bill.products" [nzShowPagination]="false" [nzFrontPagination]="false">
       <thead>
