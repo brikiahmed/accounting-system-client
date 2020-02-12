@@ -1,16 +1,19 @@
-<div *ngIf="!loading">
-  <h3>Category : {{category.name}}</h3>
-  <h5 class="mt-5">Products : </h5>
-  <nz-table #basicTable [nzData]="category.products">
-    <thead>
-    <tr>
-      <th>Name</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let data of basicTable.data">
-      <td>{{data.name}}</td>
-    </tr>
-    </tbody>
-  </nz-table>
+<h3>Détails categorie</h3>
+<div class="container mt-5" *ngIf="!loading">
+  <h5>Nom : {{category.name}}</h5>
+  <div *ngIf="category.products.length != 0">
+    <h5 class="mt-5">Produits : </h5>
+    <nz-table #basicTable [nzData]="category.products">
+      <thead>
+      <tr>
+        <th>Nom</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{data.name}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
 </div>

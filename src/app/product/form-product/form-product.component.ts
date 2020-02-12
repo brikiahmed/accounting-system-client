@@ -4,7 +4,7 @@ import {CrudService} from '../../_services/crud.service';
 import {Globals} from '../../_globals/Globals';
 import {CategoryModel} from '../../_models/category.model';
 import {ProductModel} from '../../_models/product.model';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-form-product',
@@ -22,7 +22,8 @@ export class FormProductComponent implements OnInit {
 
   constructor(private crud: CrudService,
               private fb: FormBuilder,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private router: Router) {
     this.productUrl = Globals.apiUrl + Globals.product;
     this.categoryUrl = Globals.apiUrl + Globals.category;
   }
@@ -71,6 +72,7 @@ export class FormProductComponent implements OnInit {
     // console.log(this.productForm.value);
     this.crud.put(this.productUrl, this.product.id, this.productForm.value).subscribe(data => {
       console.log(data);
+      this.router.navigate(['category']);
     });
   }
 

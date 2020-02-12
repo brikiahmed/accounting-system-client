@@ -3,7 +3,7 @@ import {CrudService} from '../../_services/crud.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Globals} from '../../_globals/Globals';
 import {CategoryModel} from '../../_models/category.model';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-form-category',
@@ -19,7 +19,8 @@ export class FormCategoryComponent implements OnInit {
 
   constructor(private crud: CrudService,
               private fb: FormBuilder,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private router: Router) {
     this.categoryUrl = Globals.apiUrl + Globals.category;
   }
 
@@ -51,6 +52,7 @@ export class FormCategoryComponent implements OnInit {
     console.log(this.categoryForm.value);
     this.crud.put(this.categoryUrl, this.category.id, this.categoryForm.value).subscribe(data => {
       console.log(data);
+      this.router.navigate(['category']);
     });
   }
 }
