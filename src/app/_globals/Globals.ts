@@ -21,10 +21,13 @@ export class Globals {
   static shop = '/shop';
   static home_image = '/home-image';
   static bill = '/bill';
+  static depot = '/depot'
   static search = '/search';
   static payment = '/payment';
   static cash = '/cash';
   static check = '/check';
+  static box = '/box';
+  static bank = '/bank'
   static provider = '/provider';
   static no_payment = '/no-payment';
 

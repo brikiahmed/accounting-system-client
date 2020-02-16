@@ -1,0 +1,15 @@
+<nz-table #basicTable [nzLoading]="loading" [nzData]="depots" [nzShowPagination]="false">
+  <thead>
+  <tr>
+    <th>Amount</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let depot of depots" routerLink="/depot/{{depot.id}}">
+    <td>{{ depot.amount }}</td>
+    <td *ngIf="type==='box'">{{ depot.type }}</td>
+    <td *ngIf="type==='box'">{{ depot.amount }}</td>
+  </tr>
+  </tbody>
+</nz-table>
+

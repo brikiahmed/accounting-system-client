@@ -61,6 +61,19 @@
       <li nz-menu-item routerLink="/category/new">New</li>
     </ul>
   </li>
+  <li
+    (nzOpenChange)="openHandler('sub6')"
+    [(nzOpen)]="openMap.sub6"
+    nz-submenu
+    nzIcon="question-circle"
+    nzTitle="Depot"
+  >
+    <ul>
+      <li nz-menu-item routerLink="/depot/box">Box</li>
+      <li nz-menu-item routerLink="/depot/bank">Bank</li>
+      <li nz-menu-item routerLink="/depot/add">Ajouter un depot</li>
+    </ul>
+  </li>
   <li *ngIf="false"
       (click)="logout()"
       nz-menu-item

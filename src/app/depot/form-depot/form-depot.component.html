@@ -1,0 +1,22 @@
+<form [formGroup]="depotForm" (ngSubmit)="submit()">
+  <div class="row justify-content-center">
+    <div class="form-group col-lg-12 col-md-10">
+      <label for="amount">Amount</label>
+      <input type="text" class="form-control" id="amount" placeholder="amount" formControlName="amount">
+    </div>
+  </div>
+
+  <div class="row justify-content-center'">
+    <div class="form-group col-lg-12 col-md-10">
+      <label>type</label>
+      <nz-select class="custom-select" type="type" (change)="changeType($event)" formControlName="type">
+        <nz-option nzValue="0" nzLabel="Box"></nz-option>
+        <nz-option nzValue="1" nzLabel="Bank"></nz-option>
+      </nz-select>
+    </div>
+  </div>
+  <div class="row justify-content-end">
+    <input type="submit" class="btn btn-success" value="Submit">
+  </div>
+</form>
+
