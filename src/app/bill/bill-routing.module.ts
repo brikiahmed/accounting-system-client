@@ -9,10 +9,16 @@ const routes: Routes = [
   {
     path: '',
     component: ListBillComponent
-  }, {
+  },
+  {
     path: 'add',
     component: FormBillComponent
-  }, {
+  },
+  {
+    path: 'edit/:id',
+    component: FormBillComponent
+  },
+  {
     path: ':id',
     component: ShowBillComponent
   },

@@ -36,4 +36,9 @@ export class ListCategoryComponent implements OnInit {
       });
   }
 
+  delete(id: string) {
+    this.crud.delete(this.categoryUrl, id).subscribe(data => {
+      this.categories = this.categories.filter(category => category.id !== id);
+    });
+  }
 }

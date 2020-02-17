@@ -1,8 +1,8 @@
-<nz-table #basicTable [nzData]="categories">
+<h3>Categories</h3>
+<nz-table [nzLoading]="loading" #basicTable [nzData]="categories">
   <thead>
   <tr>
     <th>Name</th>
-    <th>Products</th>
     <th>Action</th>
   </tr>
   </thead>
@@ -10,16 +10,11 @@
   <tr *ngFor="let data of basicTable.data">
     <td>{{data.name}}</td>
     <td>
-      [
-        <span *ngFor="let product of data.products">{{product.name}}</span>
-      ]
-    </td>
-    <td>
-      <a routerLink="show/{{data.id}}">Show</a>
+      <a [routerLink]="['/category/', data.id]">Show</a>
       <nz-divider nzType="vertical"></nz-divider>
-      <a>Edit</a>
+      <a routerLink="edit/{{data.id}}">Edit</a>
       <nz-divider nzType="vertical"></nz-divider>
-      <a>Delete</a>
+      <a (click)="delete(data.id)">Delete</a>
     </td>
   </tr>
   </tbody>
